@@ -1,43 +1,52 @@
-# Skirts & Sparkles — UX Writing & Design Case Study
+# Skirts & Sparkles
 
-A full UX writing and design project for a fictional Amsterdam-based festival discovery and ticket resale platform. Built as a showcase of end-to-end content design thinking: from strategy and voice to wireframes, prototypes, and production-ready microcopy.
+An interactive website concept for expats and internationals trying to understand the Netherlands music scene.
 
-## What's inside
+The project started as a ticket resale prototype, but the clearer product idea is broader: part event discovery, part scene guide, part fair resale marketplace. Think less "just buy a ticket" and more "help me understand what kind of night this is before I commit."
 
-**Strategy & Voice**
-- Brand positioning and content strategy (`strategy.js`)
-- Voice spectrum with three tonal registers — warm, cool, and scene (`voice.js`)
-- Brand vibes and personality definition (`vibes.js`)
+## What is live
 
-**UX Writing**
-- Microcopy for every key moment: checkout, errors, empty states, onboarding
-- Before/after comparisons across tonal variants
-- Data-driven copy decisions (`data.js`)
+- A static GitHub Pages-ready site in `index.html`
+- React loaded from CDN, with local `data.js`, `components.jsx`, `app.jsx`, and `styles.css`
+- A generated hero image in `assets/amsterdam-night-scene.png`
+- Interactive mood filters, city filters, event detail panels, resale trust section, glossary, and mobile-app preview
 
-**Design & Screens**
-- Hi-fi screen designs for home, listing, buy, sell, event, account, mobile, and empty states (`screens/`)
-- Wireframe explorations (`wireframes.js`, HTML wireframes)
-- Interactive prototype (`Skirts and Sparkles - Prototype.html`)
+## Product direction
 
-**Core Components**
-- Reusable UI component library (`components.jsx`)
-- App shell and routing (`app.jsx`, `app.js`)
-- Full responsive stylesheet (`styles.css`)
+Skirts & Sparkles is for people who are new to Dutch nightlife and do not yet know the venues, genres, rituals, transport patterns, or ticket norms.
 
-## The concept
+Core jobs:
 
-Amsterdam's techno/festival scene is incredible — and completely opaque from the outside. Skirts & Sparkles is designed as a front door for people who want in but don't know the language yet. Every other ticket site optimises for "I already know what I want." This one optimises for *"I heard this is a thing, help me."*
+- Discover events by vibe, not just date
+- Understand scene language without feeling stupid
+- Know practical details before going
+- Buy or resell tickets with fair-price guardrails
+- Later, turn saved events and tickets into a mobile companion
 
-The resale layer is the trust play; the discovery layer is the magic.
+## Local preview
 
-## Key UX decisions
+```bash
+python3 -m http.server 4173
+```
 
-- **First-timer friendly**: Glossary tooltips, "first-timer OK" filters, and approachable language for newcomers to the scene
-- **Trust at checkout**: Reassurance-first microcopy, price caps at 110% of face value, and transparent seller verification
-- **Graceful empty states**: Sold-out pages designed to retain hope and drive alert sign-ups (72% of tickets reappear within 48h)
-- **Voice flexibility**: Three tonal registers (warm/cool/scene) so copy adapts to context without losing brand coherence
+Then open:
+
+```text
+http://127.0.0.1:4173/
+```
+
+## Legacy prototype files
+
+The older prototype screens and strategy files are still in the repo as concept material:
+
+- `screens/`
+- `strategy.js`
+- `voice.js`
+- `vibes.js`
+- `wireframes.js`
+- `Skirts and Sparkles - Wireframes.html`
+- `Skirts and Sparkles - Prototype.html`
 
 ## Author
 
-**Annika Bhargava** — UX Writer & Content Designer  
-[Portfolio](https://annikabhargava.github.io/portfolio) · [LinkedIn](https://www.linkedin.com/in/annika-bhargava-94323a97/)
+Annika Bhargava
