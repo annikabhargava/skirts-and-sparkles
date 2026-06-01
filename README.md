@@ -1,15 +1,13 @@
 # Skirts & Sparkles
 
-An interactive website concept for expats and internationals trying to understand the Netherlands music scene.
-
-The project started as a ticket resale prototype, but the clearer product idea is broader: part event discovery, part scene guide, part fair resale marketplace. Think less "just buy a ticket" and more "help me understand what kind of night this is before I commit."
+An interactive website for expats and internationals finding music nights in the Netherlands.
 
 ## What is live
 
 - A static GitHub Pages-ready site in `index.html`
 - React loaded from CDN, with local `data.js`, `components.jsx`, `app.jsx`, and `styles.css`
 - A generated hero image in `assets/amsterdam-night-scene.png`
-- Interactive mood filters, city filters, first-timer mode, event detail panels, resale trust section, pre-night checklist, My tix hub, glossary, and mobile-app preview
+- Interactive mood filters, city filters, first-timer mode, event detail panels, resale trust section, pre-night checklist, My tix hub, login/account linking, glossary, and ticket wallet preview
 
 ## Product direction
 
@@ -23,7 +21,7 @@ Core jobs:
 - Know practical details before going
 - Save nights and track a pre-event checklist
 - Buy or resell tickets with fair-price guardrails
-- Later, turn saved events and tickets into a mobile companion
+- Link accounts for calendar holds, music matches, and ticket imports
 
 ## Local preview
 

@@ -7,6 +7,8 @@ function App() {
   const [firstTimerOnly, setFirstTimerOnly] = useState(true);
   const [savedEventIds, setSavedEventIds] = useState([data.events[0].id]);
   const [checklistDone, setChecklistDone] = useState(["vibe", "first-timer"]);
+  const [isSignedIn, setIsSignedIn] = useState(false);
+  const [linkedAccounts, setLinkedAccounts] = useState(["google"]);
   const progress = useScrollProgress();
 
   const selectedMood = data.moods.find((mood) => mood.id === moodId);
@@ -27,6 +29,9 @@ function App() {
   };
   const toggleChecklist = (id) => {
     setChecklistDone((ids) => ids.includes(id) ? ids.filter((item) => item !== id) : [...ids, id]);
+  };
+  const toggleLinkedAccount = (id) => {
+    setLinkedAccounts((ids) => ids.includes(id) ? ids.filter((item) => item !== id) : [...ids, id]);
   };
 
   useEffect(() => {
@@ -55,26 +60,25 @@ function App() {
           <a href="#resale">Resale</a>
           <a href="#guide">Scene guide</a>
           <a href="#my-tix">My tix</a>
-          <a href="#mobile">Mobile</a>
+          <a href="#account">Account</a>
         </div>
-        <a className="nav-cta" href="#discover">Find my night</a>
+        <a className="nav-cta" href="#account">{isSignedIn ? "Account" : "Sign in"}</a>
       </nav>
 
       <section className="hero" aria-label="Skirts and Sparkles introduction">
         <div className="hero-media">
-          <img src="assets/amsterdam-night-scene.png" alt="Newcomers arriving at an Amsterdam music venue at night" />
+          <img src="assets/amsterdam-night-scene.png" alt="People arriving at an Amsterdam music venue at night" />
           <div className="hero-overlay" />
         </div>
         <div className="hero-content">
-          <p className="eyebrow">Netherlands music scene · decoded</p>
-          <h1>Find your first night out, then feel like you belong there.</h1>
+          <p className="eyebrow">Netherlands music nights</p>
+          <h1>Find a night out that feels right.</h1>
           <p className="hero-copy">
-            Skirts & Sparkles is a warm front door to Dutch nightlife: what to book, what to expect,
-            how to get home, and how to buy or resell tickets without stress.
+            Discover events, save tickets, check the basics, and get resale alerts without the guesswork.
           </p>
           <div className="hero-actions">
             <a className="button primary" href="#discover"><Icon name="compass" /> Start exploring</a>
-            <a className="button secondary" href="#guide"><Icon name="guide" /> Learn the language</a>
+            <a className="button secondary" href="#account"><Icon name="guide" /> Sign in</a>
           </div>
         </div>
         <div className="hero-dock" aria-label="Live platform snapshot">
@@ -104,17 +108,17 @@ function App() {
 
       <section className="section discover" id="discover">
         <SectionHeader
-          eyebrow="Interactive discovery"
-          title="Choose the kind of night you can actually handle."
+          eyebrow="Discover"
+          title="What are you in the mood for?"
         >
-          Not every sold-out warehouse is a good first Dutch night out. Start with mood, then city, then the event details that ticket sites usually hide.
+          Pick a vibe. We will keep the travel, timing, and ticket details clear.
         </SectionHeader>
 
         <div className="welcome-strip">
           <div>
             <span>New here?</span>
             <strong>First-timer mode is on.</strong>
-            <p>We prioritize events with easier logistics, less scene homework, and a gentler landing.</p>
+            <p>Showing easier venues, clearer travel, and lower-pressure nights first.</p>
           </div>
           <button className={firstTimerOnly ? "active" : ""} onClick={() => setFirstTimerOnly((value) => !value)}>
             {firstTimerOnly ? "Show everything" : "First-timer OK only"}
@@ -157,7 +161,7 @@ function App() {
               )) : (
                 <div className="empty-state">
                   <strong>No exact match yet.</strong>
-                  <span>Switch city or mood. The real app would let you save this as an alert.</span>
+                  <span>Switch city or mood, or save an alert.</span>
                 </div>
               )}
             </div>
@@ -198,8 +202,8 @@ function App() {
       </section>
 
       <section className="section checklist" id="checklist">
-        <SectionHeader eyebrow="Pre-night checklist" title="A little confidence before you leave the house.">
-          Newcomers do not just need tickets. They need a small ritual that turns "am I doing this right?" into "I have got this."
+        <SectionHeader eyebrow="Checklist" title="Ready for tonight?">
+          Tick off the basics before you leave.
         </SectionHeader>
         <div className="checklist-layout">
           <div className="checklist-score">
@@ -223,8 +227,8 @@ function App() {
       </section>
 
       <section className="section resale" id="resale">
-        <SectionHeader eyebrow="TicketSwap energy, newcomer context" title="Resale should feel calm, not desperate.">
-          The ticket layer borrows the trust expectations people know, then adds context: seller clarity, fair-price logic, and what happens if the QR fails.
+        <SectionHeader eyebrow="Resale" title="Buy resale with a calmer checkout.">
+          Fair prices, verified sellers, and a fresh QR before the event.
         </SectionHeader>
         <div className="trust-grid">
           {data.trust.map((item) => (
@@ -252,8 +256,8 @@ function App() {
       </section>
 
       <section className="section guide" id="guide">
-        <SectionHeader eyebrow="Scene guide" title="No gatekeeping. Just translation.">
-          A glossary turns confusing event language into confidence, while the interface keeps users in discovery mode instead of sending them to another tab.
+        <SectionHeader eyebrow="Scene guide" title="Scene words, plain and simple.">
+          Tap a term when a listing gets confusing.
         </SectionHeader>
         <div className="guide-layout">
           <div className="glossary-list">
@@ -275,8 +279,8 @@ function App() {
       </section>
 
       <section className="section my-tix" id="my-tix">
-        <SectionHeader eyebrow="My tix" title="A saved-night hub, not a cold account page.">
-          This brings back the personal layer: tickets, alerts, checklist progress, and the tiny reminders that make going out in a new country feel less intimidating.
+        <SectionHeader eyebrow="My tix" title="Your saved nights.">
+          Tickets, alerts, routes, and door help in one place.
         </SectionHeader>
         <div className="mytix-layout">
           <article className="ticket-wallet">
@@ -317,10 +321,51 @@ function App() {
         </div>
       </section>
 
+      <section className="section account" id="account">
+        <SectionHeader eyebrow="Account" title={isSignedIn ? "Welcome back." : "Sign in to save your night."}>
+          {isSignedIn ? "Your connected accounts are ready." : "Use email or connect an account. No pressure, no spam."}
+        </SectionHeader>
+        <div className="account-layout">
+          <form className="login-panel" onSubmit={(event) => { event.preventDefault(); setIsSignedIn(true); }}>
+            <label>
+              Email
+              <input type="email" placeholder="you@example.com" required />
+            </label>
+            <label>
+              Password
+              <input type="password" placeholder="8+ characters" required />
+            </label>
+            <button type="submit">{isSignedIn ? "Signed in" : "Sign in"}</button>
+            <div className="login-actions">
+              <button type="button" onClick={() => setIsSignedIn(true)}>Continue with Google</button>
+              <button type="button" onClick={() => setIsSignedIn(true)}>Create account</button>
+            </div>
+          </form>
+          <aside className="link-panel">
+            <div className="saved-header">
+              <strong>Linked accounts</strong>
+              <span>{linkedAccounts.length}/{data.accounts.length} connected</span>
+            </div>
+            {data.accounts.map((account) => {
+              const linked = linkedAccounts.includes(account.id);
+              return (
+                <button key={account.id} className={linked ? "linked" : ""} onClick={() => toggleLinkedAccount(account.id)}>
+                  <span>
+                    <strong>{account.name}</strong>
+                    <em>{account.detail}</em>
+                  </span>
+                  <b>{linked ? "Connected" : "Connect"}</b>
+                </button>
+              );
+            })}
+          </aside>
+        </div>
+      </section>
+
       <section className="section mobile" id="mobile">
         <div className="mobile-copy">
-          <SectionHeader eyebrow="Mobile later" title="The website already knows what the app should become.">
-            Save events, watch resale, get travel nudges, open the QR, and find help at the door. The website can validate the model before the app build starts.
+          <SectionHeader eyebrow="At the venue" title="Everything you need at the door.">
+            QR, route, reminders, and support stay close.
           </SectionHeader>
           <div className="app-principles">
             <span><Icon name="phone" /> Concierge before the event</span>
@@ -333,7 +378,7 @@ function App() {
 
       <footer className="footer">
         <Brand />
-        <p>For expats, internationals, and anyone trying to find the door into Dutch nightlife.</p>
+        <p>Find the night. Keep the ticket. Get home easy.</p>
         <a href="#top">Back to top</a>
       </footer>
     </main>

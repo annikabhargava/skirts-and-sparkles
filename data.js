@@ -5,7 +5,6 @@ window.SS_DATA = {
       id: "soft",
       label: "Ease me in",
       title: "Warm rooms, early starts, friendly floors",
-      description: "For your first few weeks in the Netherlands: smaller venues, clear travel, and music that leaves space to breathe.",
       genres: ["house", "disco", "live electronic"],
       color: "#f7c66f"
     },
@@ -13,7 +12,6 @@ window.SS_DATA = {
       id: "deep",
       label: "I want the real thing",
       title: "Warehouse hours and scene institutions",
-      description: "Louder nights with proper sound, longer sets, and enough context to know what you are walking into.",
       genres: ["techno", "leftfield", "club"],
       color: "#7be0c3"
     },
@@ -21,7 +19,6 @@ window.SS_DATA = {
       id: "brave",
       label: "Surprise me",
       title: "Odd, hybrid, local, and hard to explain",
-      description: "For when you want the story afterwards: experimental bills, new collectives, and lineups you would miss on ticket sites.",
       genres: ["ambient", "bass", "hybrid"],
       color: "#9aa7ff"
     }
@@ -40,7 +37,7 @@ window.SS_DATA = {
       soldOut: false,
       mood: "soft",
       tags: ["outdoor", "free ferry", "easy first night"],
-      guide: "Start here if Dutch nightlife still feels like a closed door. You can leave before the night bus era begins.",
+      guide: "A soft landing: open air, simple travel, and enough time to get home easily.",
       practicals: ["Free ferry from Centraal", "No strict dress code", "Bring a light jacket"]
     },
     {
@@ -56,7 +53,7 @@ window.SS_DATA = {
       soldOut: true,
       mood: "deep",
       tags: ["sold out", "harder techno", "resale active"],
-      guide: "A classic Amsterdam long night. Great if you know you want pressure, pace, and a crowd that came to stay.",
+      guide: "A long Amsterdam night with pressure, pace, and a crowd that came to stay.",
       practicals: ["Lockers available", "Earplugs strongly advised", "Night bus nearby"]
     },
     {
@@ -72,7 +69,7 @@ window.SS_DATA = {
       soldOut: false,
       mood: "deep",
       tags: ["train friendly", "basement club", "editor pick"],
-      guide: "A good Rotterdam intro: direct, sweaty, welcoming, and much less ceremonial than Amsterdam.",
+      guide: "Direct, sweaty, welcoming, and close to Rotterdam Centraal.",
       practicals: ["Walk from Rotterdam Centraal", "Card only bar", "Check last train or plan night train"]
     },
     {
@@ -88,7 +85,7 @@ window.SS_DATA = {
       soldOut: false,
       mood: "brave",
       tags: ["Sunday", "experimental", "low stakes"],
-      guide: "Not really a rave, not really a concert. Perfect if you like community energy without a 06:00 ending.",
+      guide: "Community energy without a 06:00 ending.",
       practicals: ["Cycle friendly", "Food trucks outside", "English widely spoken"]
     }
   ],
@@ -103,13 +100,13 @@ window.SS_DATA = {
   trust: [
     { stat: "110%", label: "max resale cap", detail: "No hype pricing. Resale stays close to face value." },
     { stat: "48h", label: "fresh QR window", detail: "The buyer gets a refreshed ticket before the event." },
-    { stat: "0 EUR", label: "refund stress", detail: "If a ticket does not scan, support handles the refund flow." }
+    { stat: "0 EUR", label: "refund stress", detail: "If a ticket does not scan, support steps in." }
   ],
   checklist: [
     { id: "vibe", label: "Pick a night that matches your energy", detail: "Start with mood before price or popularity." },
     { id: "first-timer", label: "Check if it is first-timer OK", detail: "Look for easier venues, earlier starts, and clear transport." },
     { id: "travel", label: "Plan the way home before you go", detail: "Night trains, ferries, and buses decide how calm the ending feels." },
-    { id: "cash", label: "Check cloakroom and locker rules", detail: "Some venues still make this weirdly analog." },
+    { id: "cash", label: "Check cloakroom and locker rules", detail: "Know what to bring before you queue." },
     { id: "ears", label: "Pack earplugs", detail: "Future you deserves functioning hearing." }
   ],
   myTix: {
@@ -122,5 +119,11 @@ window.SS_DATA = {
       support: "door help ready",
       reminder: "Ferry F3 from Centraal is the easiest route"
     }
-  }
+  },
+  accounts: [
+    { id: "google", name: "Google", detail: "Calendar holds and login" },
+    { id: "spotify", name: "Spotify", detail: "Better music matches" },
+    { id: "ticketswap", name: "TicketSwap", detail: "Import resale tickets" },
+    { id: "calendar", name: "Calendar", detail: "Route and door reminders" }
+  ]
 };

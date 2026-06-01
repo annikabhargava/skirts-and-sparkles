@@ -672,7 +672,9 @@ button { font: inherit; color: inherit; }
 .checklist-score,
 .checklist-item,
 .ticket-wallet,
-.saved-nights {
+.saved-nights,
+.login-panel,
+.link-panel {
   border: 1px solid var(--line);
   border-radius: 8px;
   background: var(--chalk);
@@ -1014,6 +1016,129 @@ button { font: inherit; color: inherit; }
   background: var(--acid);
 }
 
+.account {
+  background:
+    linear-gradient(160deg, rgba(207, 255, 79, 0.24), transparent 42%),
+    var(--paper);
+}
+
+.account-layout {
+  display: grid;
+  grid-template-columns: minmax(300px, 0.8fr) minmax(320px, 1.2fr);
+  gap: 14px;
+  align-items: stretch;
+}
+
+.login-panel {
+  display: grid;
+  gap: 14px;
+  align-content: start;
+  padding: clamp(22px, 4vw, 34px);
+}
+
+.login-panel label {
+  display: grid;
+  gap: 8px;
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.login-panel input {
+  width: 100%;
+  min-height: 52px;
+  padding: 12px 14px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--paper);
+  color: var(--ink);
+  font: 700 16px var(--sans);
+}
+
+.login-panel input:focus {
+  outline: 3px solid rgba(207, 255, 79, 0.62);
+  border-color: var(--ink);
+}
+
+.login-panel > button,
+.login-actions button {
+  min-height: 48px;
+  border: 1px solid var(--ink);
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--chalk);
+  cursor: pointer;
+  font-weight: 900;
+}
+
+.login-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.login-actions button {
+  background: transparent;
+  color: var(--ink);
+}
+
+.link-panel {
+  display: grid;
+  gap: 8px;
+  align-content: start;
+  padding: 14px;
+}
+
+.link-panel button {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  align-items: center;
+  min-height: 86px;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--paper);
+  text-align: left;
+  cursor: pointer;
+}
+
+.link-panel button.linked {
+  background:
+    linear-gradient(90deg, rgba(207, 255, 79, 0.48), transparent),
+    var(--paper);
+}
+
+.link-panel button:hover {
+  border-color: var(--ink);
+}
+
+.link-panel button span {
+  display: grid;
+  gap: 6px;
+}
+
+.link-panel button em {
+  font-style: normal;
+  color: var(--muted);
+}
+
+.link-panel button b {
+  flex: 0 0 auto;
+  padding: 8px 11px;
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--chalk);
+  font-size: 12px;
+}
+
+.link-panel button.linked b {
+  background: var(--acid);
+  color: var(--ink);
+}
+
 .mobile {
   display: grid;
   grid-template-columns: minmax(0, 1fr) 390px;
@@ -1186,6 +1311,7 @@ button { font: inherit; color: inherit; }
   .guide-layout,
   .checklist-layout,
   .mytix-layout,
+  .account-layout,
   .mobile {
     grid-template-columns: 1fr;
   }
@@ -1201,7 +1327,7 @@ button { font: inherit; color: inherit; }
 
 @media (max-width: 640px) {
   .section {
-    scroll-margin-top: 150px;
+    scroll-margin-top: 0;
   }
 
   .nav-cta {
@@ -1243,6 +1369,10 @@ button { font: inherit; color: inherit; }
   }
 
   .wallet-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .login-actions {
     grid-template-columns: 1fr;
   }
 

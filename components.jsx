@@ -58,7 +58,7 @@ function EventCard({ event, selected, onSelect }) {
 
 function PhonePreview({ event }) {
   return (
-    <div className="phone-shell" aria-label="Future mobile app preview">
+    <div className="phone-shell" aria-label="Ticket wallet preview">
       <div className="phone-top" />
       <div className="phone-screen">
         <div className="phone-status">
