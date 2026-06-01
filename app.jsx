@@ -4,21 +4,46 @@ function App() {
   const [city, setCity] = useState("Amsterdam");
   const [selectedEventId, setSelectedEventId] = useState(data.events[0].id);
   const [activeTerm, setActiveTerm] = useState(data.glossary[0].term);
+  const [firstTimerOnly, setFirstTimerOnly] = useState(true);
+  const [savedEventIds, setSavedEventIds] = useState([data.events[0].id]);
+  const [checklistDone, setChecklistDone] = useState(["vibe", "first-timer"]);
   const progress = useScrollProgress();
 
   const selectedMood = data.moods.find((mood) => mood.id === moodId);
   const filteredEvents = useMemo(() => {
-    return data.events.filter((event) => event.mood === moodId && (city === "All" || event.city === city));
-  }, [moodId, city]);
+    return data.events.filter((event) => {
+      const cityMatch = city === "All" || event.city === city;
+      const firstTimerMatch = !firstTimerOnly || event.firstTimer;
+      return event.mood === moodId && cityMatch && firstTimerMatch;
+    });
+  }, [moodId, city, firstTimerOnly]);
 
   const selectedEvent = data.events.find((event) => event.id === selectedEventId) || filteredEvents[0] || data.events[0];
   const activeGlossary = data.glossary.find((item) => item.term === activeTerm) || data.glossary[0];
+  const savedEvents = data.events.filter((event) => savedEventIds.includes(event.id));
+  const checklistProgress = Math.round((checklistDone.length / data.checklist.length) * 100);
+  const toggleSaved = (id) => {
+    setSavedEventIds((ids) => ids.includes(id) ? ids.filter((item) => item !== id) : [...ids, id]);
+  };
+  const toggleChecklist = (id) => {
+    setChecklistDone((ids) => ids.includes(id) ? ids.filter((item) => item !== id) : [...ids, id]);
+  };
 
   useEffect(() => {
     if (!filteredEvents.some((event) => event.id === selectedEventId) && filteredEvents[0]) {
       setSelectedEventId(filteredEvents[0].id);
     }
   }, [filteredEvents, selectedEventId]);
+
+  useEffect(() => {
+    const jumpToHash = () => {
+      const target = window.location.hash && document.querySelector(window.location.hash);
+      if (target) target.scrollIntoView();
+    };
+    requestAnimationFrame(jumpToHash);
+    window.addEventListener("hashchange", jumpToHash);
+    return () => window.removeEventListener("hashchange", jumpToHash);
+  }, []);
 
   return (
     <main id="top">
@@ -29,6 +54,7 @@ function App() {
           <a href="#discover">Discover</a>
           <a href="#resale">Resale</a>
           <a href="#guide">Scene guide</a>
+          <a href="#my-tix">My tix</a>
           <a href="#mobile">Mobile</a>
         </div>
         <a className="nav-cta" href="#discover">Find my night</a>
@@ -41,10 +67,10 @@ function App() {
         </div>
         <div className="hero-content">
           <p className="eyebrow">Netherlands music scene · decoded</p>
-          <h1>Tickets are the transaction. The scene is the product.</h1>
+          <h1>Find your first night out, then feel like you belong there.</h1>
           <p className="hero-copy">
-            Skirts & Sparkles helps newcomers understand where to go, what the night will feel like,
-            and how to buy or resell tickets without getting burned.
+            Skirts & Sparkles is a warm front door to Dutch nightlife: what to book, what to expect,
+            how to get home, and how to buy or resell tickets without stress.
           </p>
           <div className="hero-actions">
             <a className="button primary" href="#discover"><Icon name="compass" /> Start exploring</a>
@@ -63,6 +89,8 @@ function App() {
       <section className="ticker" aria-label="Scene signals">
         <div>
           <span>first-timer filters</span>
+          <span>my tix dashboard</span>
+          <span>pre-night checklist</span>
           <span>fair resale cap</span>
           <span>venue practicals</span>
           <span>plain-English glossary</span>
@@ -81,6 +109,17 @@ function App() {
         >
           Not every sold-out warehouse is a good first Dutch night out. Start with mood, then city, then the event details that ticket sites usually hide.
         </SectionHeader>
+
+        <div className="welcome-strip">
+          <div>
+            <span>New here?</span>
+            <strong>First-timer mode is on.</strong>
+            <p>We prioritize events with easier logistics, less scene homework, and a gentler landing.</p>
+          </div>
+          <button className={firstTimerOnly ? "active" : ""} onClick={() => setFirstTimerOnly((value) => !value)}>
+            {firstTimerOnly ? "Show everything" : "First-timer OK only"}
+          </button>
+        </div>
 
         <div className="mood-grid">
           {data.moods.map((mood) => (
@@ -146,9 +185,39 @@ function App() {
                   <span>{selectedEvent.soldOut ? "Sold out" : "Primary tickets"}</span>
                   <strong>{selectedEvent.soldOut ? `${selectedEvent.resale} resale live` : `from EUR ${selectedEvent.price}`}</strong>
                 </div>
-                <button>{selectedEvent.soldOut ? "Watch resale" : "View tickets"}</button>
+                <div className="ticket-actions">
+                  <button onClick={() => toggleSaved(selectedEvent.id)}>
+                    {savedEventIds.includes(selectedEvent.id) ? "Saved" : "Save night"}
+                  </button>
+                  <button>{selectedEvent.soldOut ? "Watch resale" : "View tickets"}</button>
+                </div>
               </div>
             </aside>
+          </div>
+        </div>
+      </section>
+
+      <section className="section checklist" id="checklist">
+        <SectionHeader eyebrow="Pre-night checklist" title="A little confidence before you leave the house.">
+          Newcomers do not just need tickets. They need a small ritual that turns "am I doing this right?" into "I have got this."
+        </SectionHeader>
+        <div className="checklist-layout">
+          <div className="checklist-score">
+            <span>{checklistProgress}% ready</span>
+            <div className="score-ring" style={{ "--ready": `${checklistProgress}%` }}>
+              <strong>{checklistDone.length}/{data.checklist.length}</strong>
+            </div>
+            <p>{selectedEvent.title} is looking doable. Keep the practicals close and the night gets much easier.</p>
+          </div>
+          <div className="checklist-items">
+            {data.checklist.map((item) => (
+              <ChecklistItem
+                key={item.id}
+                item={item}
+                checked={checklistDone.includes(item.id)}
+                onToggle={toggleChecklist}
+              />
+            ))}
           </div>
         </div>
       </section>
@@ -202,6 +271,49 @@ function App() {
             <h3>{activeGlossary.term}</h3>
             <p>{activeGlossary.plain}</p>
           </div>
+        </div>
+      </section>
+
+      <section className="section my-tix" id="my-tix">
+        <SectionHeader eyebrow="My tix" title="A saved-night hub, not a cold account page.">
+          This brings back the personal layer: tickets, alerts, checklist progress, and the tiny reminders that make going out in a new country feel less intimidating.
+        </SectionHeader>
+        <div className="mytix-layout">
+          <article className="ticket-wallet">
+            <div className="wallet-topline">
+              <span>{data.myTix.ticket.status}</span>
+              <span>{selectedEvent.firstTimer ? "first-timer OK" : "scene-ready"}</span>
+            </div>
+            <h3>{selectedEvent.title}</h3>
+            <p>{selectedEvent.venue} · {selectedEvent.date} · {selectedEvent.time}</p>
+            <div className="wallet-grid">
+              <div>
+                <span>QR</span>
+                <strong>{data.myTix.ticket.qr}</strong>
+              </div>
+              <div>
+                <span>Support</span>
+                <strong>{data.myTix.ticket.support}</strong>
+              </div>
+              <div>
+                <span>Reminder</span>
+                <strong>{data.myTix.ticket.reminder}</strong>
+              </div>
+            </div>
+          </article>
+          <aside className="saved-nights">
+            <div className="saved-header">
+              <strong>{data.myTix.saved} saved nights</strong>
+              <span>{data.myTix.alerts} resale alerts</span>
+            </div>
+            {(savedEvents.length ? savedEvents : [selectedEvent]).map((event) => (
+              <button key={event.id} onClick={() => setSelectedEventId(event.id)}>
+                <span>{event.date}</span>
+                <strong>{event.title}</strong>
+                <em>{event.firstTimer ? "first-timer OK" : "after midnight energy"}</em>
+              </button>
+            ))}
+          </aside>
         </div>
       </section>
 

@@ -47,6 +47,7 @@ function EventCard({ event, selected, onSelect }) {
       <span className="event-main">
         <strong>{event.title}</strong>
         <span>{event.venue} · {event.city}</span>
+        {event.firstTimer && <em>first-timer OK</em>}
       </span>
       <span className="event-meta">
         {event.soldOut ? `${event.resale} resale` : `from EUR ${event.price}`}
@@ -103,6 +104,18 @@ function useScrollProgress() {
   return progress;
 }
 
+function ChecklistItem({ item, checked, onToggle }) {
+  return (
+    <button className={"checklist-item" + (checked ? " checked" : "")} onClick={() => onToggle(item.id)}>
+      <span className="check-dot">{checked ? "✓" : ""}</span>
+      <span>
+        <strong>{item.label}</strong>
+        <small>{item.detail}</small>
+      </span>
+    </button>
+  );
+}
+
 Object.assign(window, {
   Brand,
   Icon,
@@ -111,5 +124,6 @@ Object.assign(window, {
   EventCard,
   PhonePreview,
   GlossaryTerm,
+  ChecklistItem,
   useScrollProgress
 });

@@ -104,5 +104,23 @@ window.SS_DATA = {
     { stat: "110%", label: "max resale cap", detail: "No hype pricing. Resale stays close to face value." },
     { stat: "48h", label: "fresh QR window", detail: "The buyer gets a refreshed ticket before the event." },
     { stat: "0 EUR", label: "refund stress", detail: "If a ticket does not scan, support handles the refund flow." }
-  ]
+  ],
+  checklist: [
+    { id: "vibe", label: "Pick a night that matches your energy", detail: "Start with mood before price or popularity." },
+    { id: "first-timer", label: "Check if it is first-timer OK", detail: "Look for easier venues, earlier starts, and clear transport." },
+    { id: "travel", label: "Plan the way home before you go", detail: "Night trains, ferries, and buses decide how calm the ending feels." },
+    { id: "cash", label: "Check cloakroom and locker rules", detail: "Some venues still make this weirdly analog." },
+    { id: "ears", label: "Pack earplugs", detail: "Future you deserves functioning hearing." }
+  ],
+  myTix: {
+    name: "Annika",
+    saved: 3,
+    alerts: 2,
+    ticket: {
+      status: "Saved for tonight",
+      qr: "unlocks 48h before doors",
+      support: "door help ready",
+      reminder: "Ferry F3 from Centraal is the easiest route"
+    }
+  }
 };

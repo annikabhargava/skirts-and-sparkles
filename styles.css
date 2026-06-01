@@ -98,7 +98,7 @@ button { font: inherit; color: inherit; }
 .nav-links a,
 .nav-cta {
   border-radius: 999px;
-  padding: 10px 14px;
+  padding: 10px 12px;
   font-size: 12px;
   font-weight: 700;
   letter-spacing: 0;
@@ -301,6 +301,7 @@ button { font: inherit; color: inherit; }
 }
 
 .section {
+  scroll-margin-top: 96px;
   padding: clamp(72px, 10vw, 128px) clamp(18px, 5vw, 72px);
 }
 
@@ -372,6 +373,63 @@ button { font: inherit; color: inherit; }
 
 .explorer {
   margin-top: 16px;
+}
+
+.welcome-strip {
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+  align-items: center;
+  margin: 0 0 16px;
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background:
+    linear-gradient(120deg, rgba(207, 255, 79, 0.36), rgba(123, 224, 195, 0.18)),
+    var(--chalk);
+}
+
+.welcome-strip div {
+  display: grid;
+  gap: 4px;
+}
+
+.welcome-strip span,
+.wallet-topline,
+.saved-header span {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.welcome-strip strong {
+  font-size: 22px;
+}
+
+.welcome-strip p {
+  max-width: 620px;
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.welcome-strip button {
+  min-height: 44px;
+  flex: 0 0 auto;
+  padding: 10px 16px;
+  border: 1px solid var(--ink);
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--chalk);
+  cursor: pointer;
+  font-weight: 800;
+}
+
+.welcome-strip button.active {
+  background: var(--chalk);
+  color: var(--ink);
 }
 
 .explorer-controls {
@@ -457,6 +515,17 @@ button { font: inherit; color: inherit; }
   font-size: 18px;
 }
 
+.event-main em {
+  width: fit-content;
+  padding: 4px 7px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--acid), transparent 58%);
+  color: var(--ink);
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 800;
+}
+
 .event-main span,
 .event-meta {
   color: var(--muted);
@@ -465,6 +534,10 @@ button { font: inherit; color: inherit; }
 .event-card.selected .event-main span,
 .event-card.selected .event-meta {
   color: rgba(255, 250, 240, 0.64);
+}
+
+.event-card.selected .event-main em {
+  background: var(--acid);
 }
 
 .empty-state,
@@ -549,6 +622,13 @@ button { font: inherit; color: inherit; }
   background: var(--paper);
 }
 
+.ticket-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
 .ticket-bar div {
   display: grid;
   gap: 4px;
@@ -568,6 +648,132 @@ button { font: inherit; color: inherit; }
   color: var(--chalk);
   font-weight: 800;
   transition: transform 160ms ease;
+}
+
+.ticket-actions button:first-child {
+  background: transparent;
+  color: var(--ink);
+  border: 1px solid var(--line);
+}
+
+.checklist {
+  background:
+    linear-gradient(180deg, rgba(123, 224, 195, 0.18), transparent 38%),
+    var(--paper);
+}
+
+.checklist-layout {
+  display: grid;
+  grid-template-columns: minmax(260px, 0.72fr) minmax(320px, 1.28fr);
+  gap: 14px;
+  align-items: stretch;
+}
+
+.checklist-score,
+.checklist-item,
+.ticket-wallet,
+.saved-nights {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--chalk);
+}
+
+.checklist-score {
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  min-height: 430px;
+  padding: 28px;
+  text-align: center;
+}
+
+.checklist-score > span {
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.score-ring {
+  display: grid;
+  place-items: center;
+  width: min(240px, 70vw);
+  aspect-ratio: 1;
+  margin: 22px 0;
+  border-radius: 50%;
+  background:
+    radial-gradient(var(--chalk) 0 56%, transparent 57%),
+    conic-gradient(var(--acid) var(--ready), rgba(16, 15, 18, 0.12) 0);
+}
+
+.score-ring strong {
+  font-family: var(--serif);
+  font-size: 70px;
+  font-weight: 400;
+}
+
+.checklist-score p {
+  max-width: 340px;
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.checklist-items {
+  display: grid;
+  gap: 8px;
+}
+
+.checklist-item {
+  display: grid;
+  grid-template-columns: 38px 1fr;
+  gap: 12px;
+  align-items: center;
+  min-height: 80px;
+  padding: 16px;
+  text-align: left;
+  transition: transform 160ms ease, background 160ms ease;
+  cursor: pointer;
+}
+
+.checklist-item:hover {
+  transform: translateX(4px);
+}
+
+.checklist-item.checked {
+  background:
+    linear-gradient(90deg, rgba(207, 255, 79, 0.42), transparent),
+    var(--chalk);
+}
+
+.check-dot {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border: 1px solid var(--ink);
+  border-radius: 50%;
+  background: var(--paper);
+  font-weight: 900;
+}
+
+.checklist-item.checked .check-dot {
+  background: var(--acid);
+}
+
+.checklist-item strong,
+.saved-nights button strong {
+  display: block;
+  font-size: 17px;
+}
+
+.checklist-item small {
+  display: block;
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.4;
 }
 
 .resale {
@@ -700,6 +906,112 @@ button { font: inherit; color: inherit; }
   margin: 24px 0 0;
   font-size: clamp(22px, 3vw, 34px);
   line-height: 1.18;
+}
+
+.my-tix {
+  background:
+    linear-gradient(120deg, rgba(255, 109, 122, 0.12), transparent 48%),
+    var(--paper);
+}
+
+.mytix-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(280px, 0.85fr);
+  gap: 14px;
+}
+
+.ticket-wallet {
+  min-height: 430px;
+  padding: clamp(24px, 4vw, 44px);
+  background:
+    linear-gradient(145deg, rgba(66, 88, 255, 0.16), transparent 45%),
+    var(--chalk);
+}
+
+.wallet-topline {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  color: var(--muted);
+}
+
+.ticket-wallet h3 {
+  margin: 46px 0 8px;
+  font-family: var(--serif);
+  font-size: clamp(54px, 8vw, 110px);
+  font-weight: 400;
+  line-height: 0.86;
+}
+
+.ticket-wallet p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 18px;
+}
+
+.wallet-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 34px;
+}
+
+.wallet-grid div {
+  min-height: 120px;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(255, 250, 240, 0.58);
+}
+
+.wallet-grid span,
+.saved-nights button span,
+.saved-nights button em {
+  display: block;
+  font-family: var(--mono);
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.wallet-grid strong {
+  display: block;
+  margin-top: 12px;
+  line-height: 1.25;
+}
+
+.saved-nights {
+  display: grid;
+  gap: 8px;
+  align-content: start;
+  padding: 14px;
+}
+
+.saved-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+  padding: 4px 2px 10px;
+}
+
+.saved-nights button {
+  display: grid;
+  gap: 6px;
+  min-height: 94px;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--paper);
+  text-align: left;
+  cursor: pointer;
+}
+
+.saved-nights button:hover {
+  background: var(--acid);
 }
 
 .mobile {
@@ -872,6 +1184,8 @@ button { font: inherit; color: inherit; }
   .event-browser,
   .trust-grid,
   .guide-layout,
+  .checklist-layout,
+  .mytix-layout,
   .mobile {
     grid-template-columns: 1fr;
   }
@@ -886,6 +1200,10 @@ button { font: inherit; color: inherit; }
 }
 
 @media (max-width: 640px) {
+  .section {
+    scroll-margin-top: 150px;
+  }
+
   .nav-cta {
     display: none;
   }
@@ -907,6 +1225,7 @@ button { font: inherit; color: inherit; }
   .hero-dock,
   .detail-topline,
   .ticket-bar,
+  .welcome-strip,
   .footer {
     display: grid;
     grid-template-columns: 1fr;
@@ -920,6 +1239,10 @@ button { font: inherit; color: inherit; }
 
   .listing-row,
   .console-header {
+    grid-template-columns: 1fr;
+  }
+
+  .wallet-grid {
     grid-template-columns: 1fr;
   }
 

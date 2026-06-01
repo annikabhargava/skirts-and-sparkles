@@ -9,7 +9,7 @@ The project started as a ticket resale prototype, but the clearer product idea i
 - A static GitHub Pages-ready site in `index.html`
 - React loaded from CDN, with local `data.js`, `components.jsx`, `app.jsx`, and `styles.css`
 - A generated hero image in `assets/amsterdam-night-scene.png`
-- Interactive mood filters, city filters, event detail panels, resale trust section, glossary, and mobile-app preview
+- Interactive mood filters, city filters, first-timer mode, event detail panels, resale trust section, pre-night checklist, My tix hub, glossary, and mobile-app preview
 
 ## Product direction
 
@@ -18,8 +18,10 @@ Skirts & Sparkles is for people who are new to Dutch nightlife and do not yet kn
 Core jobs:
 
 - Discover events by vibe, not just date
+- Filter for first-timer friendly nights
 - Understand scene language without feeling stupid
 - Know practical details before going
+- Save nights and track a pre-event checklist
 - Buy or resell tickets with fair-price guardrails
 - Later, turn saved events and tickets into a mobile companion
 
