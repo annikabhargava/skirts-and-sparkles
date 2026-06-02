@@ -682,7 +682,7 @@ function App() {
 
       <section className="section account" id="account">
         <SectionHeader eyebrow="Profile" title={isSignedIn ? "Welcome back." : "Save your night."}>
-          {isSignedIn ? "Your connected accounts are ready." : "Sign in when you are ready. No pressure, no spam."}
+          {isSignedIn ? "Your connected accounts are ready." : "Sign in when you are ready. There's no pressure and we won't spam you - promise!"}
         </SectionHeader>
         <div className="account-layout">
           <div className="login-panel">
