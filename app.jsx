@@ -43,6 +43,7 @@ function App() {
     const top = (window.screen.height - height) / 2;
     const popup = window.open("", "Sign In", `width=${width},height=${height},left=${left},top=${top},status=no,menubar=no,toolbar=no`);
     if (popup) {
+      popup.document.open();
       popup.document.write(`
         <!DOCTYPE html>
         <html>
@@ -168,6 +169,7 @@ function App() {
         </body>
         </html>
       `);
+      popup.document.close();
     }
   };
 
@@ -194,6 +196,7 @@ function App() {
     const top = (window.screen.height - height) / 2;
     const popup = window.open("", "Checkout", `width=${width},height=${height},left=${left},top=${top},status=no,menubar=no,toolbar=no`);
     if (popup) {
+      popup.document.open();
       popup.document.write(`
         <!DOCTYPE html>
         <html>
@@ -330,6 +333,7 @@ function App() {
         </body>
         </html>
       `);
+      popup.document.close();
     }
   };
 
