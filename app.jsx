@@ -666,7 +666,7 @@ function App() {
           </article>
           <aside className="saved-nights">
             <div className="saved-header">
-              <strong>{data.myTix.saved} saved nights</strong>
+              <strong>{savedEventIds.length} saved {savedEventIds.length === 1 ? "night" : "nights"}</strong>
               <span>{data.myTix.alerts} resale alerts</span>
             </div>
             {(savedEvents.length ? savedEvents : [selectedEvent]).map((event) => (
