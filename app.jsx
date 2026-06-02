@@ -10,6 +10,7 @@ function App() {
   const [isSignedIn, setIsSignedIn] = useState(false);
   const [linkedAccounts, setLinkedAccounts] = useState(["google"]);
   const [inspectListing, setInspectListing] = useState(null);
+  const [doorHelpActive, setDoorHelpActive] = useState(false);
   const progress = useScrollProgress();
 
   const selectedMood = data.moods.find((mood) => mood.id === moodId);
@@ -186,10 +187,161 @@ function App() {
     return () => window.removeEventListener("hashchange", jumpToHash);
   }, []);
 
+  const openCheckoutPopup = (event) => {
+    const width = 500;
+    const height = 650;
+    const left = (window.screen.width - width) / 2;
+    const top = (window.screen.height - height) / 2;
+    const popup = window.open("", "Checkout", `width=${width},height=${height},left=${left},top=${top},status=no,menubar=no,toolbar=no`);
+    if (popup) {
+      popup.document.write(`
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <title>Checkout — ${event.title}</title>
+          <meta name="viewport" content="width=device-width, initial-scale=1">
+          <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&family=JetBrains+Mono:wght@700&display=swap" rel="stylesheet">
+          <style>
+            body {
+              background: #100f12;
+              color: #fffaf0;
+              font-family: 'Inter', sans-serif;
+              margin: 0;
+              padding: 32px 24px;
+              box-sizing: border-box;
+              display: flex;
+              flex-direction: column;
+              min-height: 100vh;
+            }
+            .logo {
+              font-family: 'JetBrains Mono', monospace;
+              font-size: 11px;
+              letter-spacing: 0.1em;
+              text-transform: uppercase;
+              color: #cfff4f;
+              margin-bottom: 24px;
+            }
+            h2 {
+              font-size: 24px;
+              margin: 0 0 4px;
+              font-weight: 800;
+            }
+            .event-meta {
+              font-size: 14px;
+              color: rgba(255, 250, 240, 0.7);
+              margin-bottom: 24px;
+            }
+            .price-card {
+              background: #19181c;
+              border: 1px solid rgba(255, 250, 240, 0.14);
+              border-radius: 8px;
+              padding: 16px;
+              margin-bottom: 24px;
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+            }
+            .price-card strong {
+              font-size: 20px;
+              color: #cfff4f;
+            }
+            form {
+              display: grid;
+              gap: 16px;
+            }
+            label {
+              display: grid;
+              gap: 6px;
+              font-family: 'JetBrains Mono', monospace;
+              font-size: 10px;
+              font-weight: 700;
+              text-transform: uppercase;
+            }
+            input {
+              background: #19181c;
+              border: 1px solid rgba(255, 250, 240, 0.14);
+              border-radius: 8px;
+              color: #fffaf0;
+              padding: 12px 14px;
+              font-size: 15px;
+              font-family: inherit;
+            }
+            input:focus {
+              outline: 2px solid #cfff4f;
+              border-color: #cfff4f;
+            }
+            .pay-btn {
+              background: #cfff4f;
+              color: #100f12;
+              border: 0;
+              border-radius: 999px;
+              padding: 14px;
+              font-weight: 800;
+              font-size: 15px;
+              cursor: pointer;
+              margin-top: 12px;
+            }
+            .pay-btn:hover {
+              opacity: 0.9;
+            }
+            .note {
+              font-size: 12px;
+              color: rgba(255, 250, 240, 0.5);
+              text-align: center;
+              margin-top: 16px;
+              line-height: 1.4;
+            }
+          </style>
+        </head>
+        <body>
+          <div class="logo">Skirts & Sparkles</div>
+          <h2>Secure Checkout</h2>
+          <div class="event-meta">${event.title} · ${event.venue}</div>
+          
+          <div class="price-card">
+            <span>1x General Admission</span>
+            <strong>EUR ${event.price}</strong>
+          </div>
+          
+          <form id="payForm">
+            <label>Name on Card <input type="text" required placeholder="John Doe" autofocus></label>
+            <label>Card Number <input type="text" required placeholder="4000 1234 5678 9010"></label>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+              <label>Expiry <input type="text" required placeholder="MM/YY"></label>
+              <label>CVC <input type="text" required placeholder="123"></label>
+            </div>
+            <button type="submit" class="pay-btn">Pay EUR ${event.price}</button>
+          </form>
+          
+          <div class="note">
+            Protected by Fair Price Guarantee.<br>
+            A fresh QR ticket code will be generated and re-issued 48 hours before doors.
+          </div>
+          
+          <script>
+            document.getElementById('payForm').addEventListener('submit', (e) => {
+              e.preventDefault();
+              if (window.opener) {
+                window.opener.postMessage({ type: 'TICKET_PURCHASE_SUCCESS', eventId: '${event.id}' }, '*');
+              }
+              window.close();
+            });
+          </script>
+        </body>
+        </html>
+      `);
+    }
+  };
+
   useEffect(() => {
     const handleMessage = (event) => {
       if (event.data && event.data.type === 'AUTH_SUCCESS') {
         setIsSignedIn(true);
+      }
+      if (event.data && event.data.type === 'TICKET_PURCHASE_SUCCESS') {
+        const boughtId = event.data.eventId;
+        setSavedEventIds((ids) => ids.includes(boughtId) ? ids : [...ids, boughtId]);
+        alert("Success! Your ticket is reserved. Find it in your My Tix hub.");
       }
     };
     window.addEventListener('message', handleMessage);
@@ -331,7 +483,10 @@ function App() {
               )) : (
                 <div className="empty-state">
                   <strong>No exact match yet.</strong>
-                  <span>Switch city or mood, or save an alert.</span>
+                  <span>Try changing your filters to see more music nights.</span>
+                  <button className="empty-state-btn" onClick={() => { setCity("All"); setFirstTimerOnly(false); }}>
+                    Reset filters
+                  </button>
                 </div>
               )}
             </div>
@@ -339,7 +494,7 @@ function App() {
             <aside className="event-detail">
               <div className="detail-topline">
                 <span>{selectedEvent.date} · {selectedEvent.time}</span>
-                <span>{selectedEvent.firstTimer ? "first-timer OK" : "know what you like"}</span>
+                <span>{selectedEvent.firstTimer ? "first-timer OK" : "scene-ready"}</span>
               </div>
               <h3>{selectedEvent.title}</h3>
               <p>{selectedEvent.guide}</p>
@@ -363,7 +518,15 @@ function App() {
                   <button onClick={() => toggleSaved(selectedEvent.id)}>
                     {savedEventIds.includes(selectedEvent.id) ? "Saved" : "Save night"}
                   </button>
-                  <button>{selectedEvent.soldOut ? "Watch resale" : "View tickets"}</button>
+                  <button onClick={() => {
+                    if (selectedEvent.soldOut) {
+                      document.getElementById("resale")?.scrollIntoView({ behavior: "smooth" });
+                    } else {
+                      openCheckoutPopup(selectedEvent);
+                    }
+                  }}>
+                    {selectedEvent.soldOut ? "Watch resale" : "View tickets"}
+                  </button>
                 </div>
               </div>
             </aside>
@@ -510,7 +673,7 @@ function App() {
               <button key={event.id} onClick={() => setSelectedEventId(event.id)}>
                 <span>{event.date}</span>
                 <strong>{event.title}</strong>
-                <em>{event.firstTimer ? "first-timer OK" : "after midnight energy"}</em>
+                <em>{event.firstTimer ? "first-timer OK" : "scene-ready"}</em>
               </button>
             ))}
           </aside>
@@ -571,7 +734,11 @@ function App() {
             <span><Icon name="guide" /> Help mode under pressure</span>
           </div>
         </div>
-        <PhonePreview event={selectedEvent} />
+        <PhonePreview 
+          event={selectedEvent} 
+          doorHelpActive={doorHelpActive} 
+          onToggleDoorHelp={() => setDoorHelpActive(!doorHelpActive)} 
+        />
       </section>
 
       <footer className="footer">
