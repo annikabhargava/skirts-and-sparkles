@@ -9,6 +9,7 @@ function App() {
   const [checklistDone, setChecklistDone] = useState(["vibe", "first-timer"]);
   const [isSignedIn, setIsSignedIn] = useState(false);
   const [linkedAccounts, setLinkedAccounts] = useState(["google"]);
+  const [inspectListing, setInspectListing] = useState(null);
   const progress = useScrollProgress();
 
   const selectedMood = data.moods.find((mood) => mood.id === moodId);
@@ -34,6 +35,141 @@ function App() {
     setLinkedAccounts((ids) => ids.includes(id) ? ids.filter((item) => item !== id) : [...ids, id]);
   };
 
+  const openSignInPopup = (mode) => {
+    const width = 500;
+    const height = 600;
+    const left = (window.screen.width - width) / 2;
+    const top = (window.screen.height - height) / 2;
+    const popup = window.open("", "Sign In", `width=${width},height=${height},left=${left},top=${top},status=no,menubar=no,toolbar=no`);
+    if (popup) {
+      popup.document.write(`
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <title>${mode === "create" ? "Create Account" : "Sign In"} — Skirts & Sparkles</title>
+          <meta name="viewport" content="width=device-width, initial-scale=1">
+          <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&family=JetBrains+Mono:wght@700&display=swap" rel="stylesheet">
+          <style>
+            body {
+              background: #100f12;
+              color: #fffaf0;
+              font-family: 'Inter', sans-serif;
+              margin: 0;
+              padding: 40px 24px;
+              display: flex;
+              flex-direction: column;
+              align-items: center;
+              justify-content: center;
+              min-height: 100vh;
+              box-sizing: border-box;
+            }
+            .container {
+              width: 100%;
+              max-width: 360px;
+            }
+            .logo {
+              font-family: 'JetBrains Mono', monospace;
+              font-size: 11px;
+              letter-spacing: 0.1em;
+              text-transform: uppercase;
+              color: #cfff4f;
+              margin-bottom: 24px;
+            }
+            h2 {
+              font-size: 28px;
+              margin: 0 0 8px;
+              font-weight: 800;
+            }
+            p {
+              color: rgba(255, 250, 240, 0.7);
+              font-size: 14px;
+              margin: 0 0 24px;
+              line-height: 1.4;
+            }
+            form {
+              display: grid;
+              gap: 16px;
+              width: 100%;
+            }
+            label {
+              display: grid;
+              gap: 6px;
+              font-family: 'JetBrains Mono', monospace;
+              font-size: 10px;
+              font-weight: 700;
+              text-transform: uppercase;
+            }
+            input {
+              background: #19181c;
+              border: 1px solid rgba(255, 250, 240, 0.14);
+              border-radius: 8px;
+              color: #fffaf0;
+              padding: 12px 14px;
+              font-size: 15px;
+              font-family: inherit;
+            }
+            input:focus {
+              outline: 2px solid #cfff4f;
+              border-color: #cfff4f;
+            }
+            button {
+              background: #cfff4f;
+              color: #100f12;
+              border: 0;
+              border-radius: 999px;
+              padding: 14px;
+              font-weight: 800;
+              font-size: 14px;
+              cursor: pointer;
+              margin-top: 12px;
+            }
+            button:hover {
+              opacity: 0.9;
+            }
+            .google-btn {
+              background: transparent;
+              color: #fffaf0;
+              border: 1px solid rgba(255, 250, 240, 0.2);
+              margin-top: 8px;
+            }
+            .google-btn:hover {
+              border-color: #fffaf0;
+            }
+          </style>
+        </head>
+        <body>
+          <div class="container">
+            <div class="logo">Skirts & Sparkles</div>
+            <h2>${mode === "create" ? "Create Account" : "Sign In"}</h2>
+            <p>${mode === "create" ? "Save nights, link accounts, and keep tickets close." : "Access saved nights, alerts, and linked accounts."}</p>
+            <form id="authForm">
+              <label>Email <input type="email" required placeholder="you@example.com" autofocus></label>
+              <label>Password <input type="password" required placeholder="8+ characters"></label>
+              <button type="submit">${mode === "create" ? "Create account" : "Sign in"}</button>
+              <button type="button" class="google-btn" id="googleBtn">Continue with Google</button>
+            </form>
+          </div>
+          <script>
+            document.getElementById('authForm').addEventListener('submit', (e) => {
+              e.preventDefault();
+              if (window.opener) {
+                window.opener.postMessage({ type: 'AUTH_SUCCESS' }, '*');
+              }
+              window.close();
+            });
+            document.getElementById('googleBtn').addEventListener('click', () => {
+              if (window.opener) {
+                window.opener.postMessage({ type: 'AUTH_SUCCESS' }, '*');
+              }
+              window.close();
+            });
+          </script>
+        </body>
+        </html>
+      `);
+    }
+  };
+
   useEffect(() => {
     if (!filteredEvents.some((event) => event.id === selectedEventId) && filteredEvents[0]) {
       setSelectedEventId(filteredEvents[0].id);
@@ -50,6 +186,16 @@ function App() {
     return () => window.removeEventListener("hashchange", jumpToHash);
   }, []);
 
+  useEffect(() => {
+    const handleMessage = (event) => {
+      if (event.data && event.data.type === 'AUTH_SUCCESS') {
+        setIsSignedIn(true);
+      }
+    };
+    window.addEventListener('message', handleMessage);
+    return () => window.removeEventListener('message', handleMessage);
+  }, []);
+
   return (
     <main id="top">
       <div className="scroll-progress" style={{ transform: `scaleX(${progress})` }} />
@@ -60,9 +206,13 @@ function App() {
           <a href="#resale">Resale</a>
           <a href="#guide">Scene guide</a>
           <a href="#my-tix">My tix</a>
-          <a href="#account">Account</a>
         </div>
-        <a className="nav-cta" href="#account">{isSignedIn ? "Account" : "Sign in"}</a>
+        <button 
+          className="nav-cta" 
+          onClick={() => isSignedIn ? document.getElementById("account")?.scrollIntoView({ behavior: "smooth" }) : openSignInPopup("signin")}
+        >
+          {isSignedIn ? "Profile" : "Sign in"}
+        </button>
       </nav>
 
       <section className="hero" aria-label="Skirts and Sparkles introduction">
@@ -78,7 +228,12 @@ function App() {
           </p>
           <div className="hero-actions">
             <a className="button primary" href="#discover"><Icon name="compass" /> Start exploring</a>
-            <a className="button secondary" href="#account"><Icon name="guide" /> Sign in</a>
+            <button 
+              className="button secondary" 
+              onClick={() => isSignedIn ? document.getElementById("account")?.scrollIntoView({ behavior: "smooth" }) : openSignInPopup("signin")}
+            >
+              <Icon name="guide" /> {isSignedIn ? "Profile" : "Sign in"}
+            </button>
           </div>
         </div>
         <div className="hero-dock" aria-label="Live platform snapshot">
@@ -97,7 +252,7 @@ function App() {
           <span>pre-night checklist</span>
           <span>fair resale cap</span>
           <span>venue practicals</span>
-          <span>plain-English glossary</span>
+          <span>lingo translator</span>
           <span>night bus nudges</span>
           <span>fresh QR tickets</span>
           <span>first-timer filters</span>
@@ -116,13 +271,28 @@ function App() {
 
         <div className="welcome-strip">
           <div>
-            <span>New here?</span>
-            <strong>First-timer mode is on.</strong>
-            <p>Showing easier venues, clearer travel, and lower-pressure nights first.</p>
+            <span>Browse mode</span>
+            <strong>{firstTimerOnly ? "First-timer mode is active" : "Showing all events"}</strong>
+            <p>
+              {firstTimerOnly
+                ? "Showing easier venues, clearer travel, and lower-pressure nights first."
+                : "Showing the full list, including later and louder nights."}
+            </p>
           </div>
-          <button className={firstTimerOnly ? "active" : ""} onClick={() => setFirstTimerOnly((value) => !value)}>
-            {firstTimerOnly ? "Show everything" : "First-timer OK only"}
-          </button>
+          <div className="welcome-toggle-group">
+            <button 
+              className={firstTimerOnly ? "active" : ""} 
+              onClick={() => setFirstTimerOnly(true)}
+            >
+              First-timer friendly
+            </button>
+            <button 
+              className={!firstTimerOnly ? "active" : ""} 
+              onClick={() => setFirstTimerOnly(false)}
+            >
+              Show all events
+            </button>
+          </div>
         </div>
 
         <div className="mood-grid">
@@ -249,14 +419,16 @@ function App() {
               <span>Seller {index + 1}</span>
               <strong>EUR {price}</strong>
               <span>{price <= 58 ? "face value" : "inside fair cap"}</span>
-              <button>Inspect</button>
+              <button onClick={() => setInspectListing({ price, seller: `Seller ${index + 1}`, status: price <= 58 ? "face value" : "inside fair cap" })}>
+                Inspect
+              </button>
             </div>
           ))}
         </div>
       </section>
 
       <section className="section guide" id="guide">
-        <SectionHeader eyebrow="Scene guide" title="Scene words, plain and simple.">
+        <SectionHeader eyebrow="Scene guide" title="Scene terms, quick and clear.">
           Tap a term when a listing gets confusing.
         </SectionHeader>
         <div className="guide-layout">
@@ -271,7 +443,7 @@ function App() {
             ))}
           </div>
           <div className="glossary-answer">
-            <span>Plain English</span>
+            <span>Quick meaning</span>
             <h3>{activeGlossary.term}</h3>
             <p>{activeGlossary.plain}</p>
           </div>
@@ -322,25 +494,27 @@ function App() {
       </section>
 
       <section className="section account" id="account">
-        <SectionHeader eyebrow="Account" title={isSignedIn ? "Welcome back." : "Sign in to save your night."}>
-          {isSignedIn ? "Your connected accounts are ready." : "Use email or connect an account. No pressure, no spam."}
+        <SectionHeader eyebrow="Profile" title={isSignedIn ? "Welcome back." : "Save your night."}>
+          {isSignedIn ? "Your connected accounts are ready." : "Sign in when you are ready. No pressure, no spam."}
         </SectionHeader>
         <div className="account-layout">
-          <form className="login-panel" onSubmit={(event) => { event.preventDefault(); setIsSignedIn(true); }}>
-            <label>
-              Email
-              <input type="email" placeholder="you@example.com" required />
-            </label>
-            <label>
-              Password
-              <input type="password" placeholder="8+ characters" required />
-            </label>
-            <button type="submit">{isSignedIn ? "Signed in" : "Sign in"}</button>
-            <div className="login-actions">
-              <button type="button" onClick={() => setIsSignedIn(true)}>Continue with Google</button>
-              <button type="button" onClick={() => setIsSignedIn(true)}>Create account</button>
+          <div className="login-panel">
+            <div>
+              <span className="panel-label">Status</span>
+              <h3>{isSignedIn ? "Signed in" : "Not signed in yet"}</h3>
+              <p>{isSignedIn ? "Saved nights, alerts, and linked accounts are active." : "Sign in to save nights and connect accounts."}</p>
             </div>
-          </form>
+            <div className="login-actions">
+              <button type="button" onClick={() => openSignInPopup("signin")}>
+                {isSignedIn ? "Manage sign in" : "Sign in"}
+              </button>
+              {!isSignedIn && (
+                <button type="button" onClick={() => openSignInPopup("create")}>
+                  Create account
+                </button>
+              )}
+            </div>
+          </div>
           <aside className="link-panel">
             <div className="saved-header">
               <strong>Linked accounts</strong>
@@ -381,6 +555,31 @@ function App() {
         <p>Find the night. Keep the ticket. Get home easy.</p>
         <a href="#top">Back to top</a>
       </footer>
+
+      {inspectListing && (
+        <div className="modal-backdrop" role="presentation" onClick={() => setInspectListing(null)}>
+          <section className="inspect-modal" role="dialog" aria-modal="true" aria-labelledby="inspect-title" onClick={(event) => event.stopPropagation()}>
+            <button className="modal-close" aria-label="Close ticket details" onClick={() => setInspectListing(null)}>×</button>
+            <p className="eyebrow">Resale ticket</p>
+            <h2 id="inspect-title">{inspectListing.seller}</h2>
+            <div className="inspect-grid">
+              <div>
+                <span>Price</span>
+                <strong>EUR {inspectListing.price}</strong>
+              </div>
+              <div>
+                <span>Status</span>
+                <strong>{inspectListing.status}</strong>
+              </div>
+              <div>
+                <span>Protection</span>
+                <strong>Fresh QR before doors</strong>
+              </div>
+            </div>
+            <button className="modal-primary" onClick={() => setInspectListing(null)}>Looks good</button>
+          </section>
+        </div>
+      )}
     </main>
   );
 }
