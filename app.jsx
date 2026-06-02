@@ -47,7 +47,7 @@ function App() {
         <!DOCTYPE html>
         <html>
         <head>
-          <title>${mode === "create" ? "Create Account" : "Sign In"} — Skirts & Sparkles</title>
+          <title>${mode === "create" ? "Create Account" : "Sign In"} | Skirts & Sparkles</title>
           <meta name="viewport" content="width=device-width, initial-scale=1">
           <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&family=JetBrains+Mono:wght@700&display=swap" rel="stylesheet">
           <style>
@@ -198,7 +198,7 @@ function App() {
         <!DOCTYPE html>
         <html>
         <head>
-          <title>Checkout — ${event.title}</title>
+          <title>Checkout | ${event.title}</title>
           <meta name="viewport" content="width=device-width, initial-scale=1">
           <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&family=JetBrains+Mono:wght@700&display=swap" rel="stylesheet">
           <style>
@@ -376,7 +376,7 @@ function App() {
           <p className="eyebrow">Netherlands music nights</p>
           <h1>Dutch nightlife, translated.</h1>
           <p className="hero-copy">
-            Find a music night that matches your vibe—with plain-English practicals, night-transit warnings, and 100% secure ticket resale.
+            Find a music night that matches your vibe, complete with plain-English guides, night-transit warnings, and 100% secure ticket resale.
           </p>
           <div className="hero-actions">
             <a className="button primary" href="#discover"><Icon name="compass" /> Start exploring</a>
@@ -482,8 +482,8 @@ function App() {
                 />
               )) : (
                 <div className="empty-state">
-                  <strong>No exact match yet.</strong>
-                  <span>Try changing your filters to see more music nights.</span>
+                  <strong>We couldn't find a perfect match</strong>
+                  <span>Dutch nightlife is always shifting, and sometimes specific combinations are taking a breather. Try widening your search, or reset your filters to see all available music nights.</span>
                   <button className="empty-state-btn" onClick={() => { setCity("All"); setFirstTimerOnly(false); }}>
                     Reset filters
                   </button>

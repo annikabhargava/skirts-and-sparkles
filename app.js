@@ -1,4 +1,4 @@
-// App shell — tab switching, tweaks, edit-mode
+// App shell: tab switching, tweaks, edit-mode
 (function () {
   // Tabs
   const tabs = document.querySelectorAll('.tab');
