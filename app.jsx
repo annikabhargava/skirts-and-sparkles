@@ -222,9 +222,9 @@ function App() {
         </div>
         <div className="hero-content">
           <p className="eyebrow">Netherlands music nights</p>
-          <h1>Find a night out that feels right.</h1>
+          <h1>Dutch nightlife, translated.</h1>
           <p className="hero-copy">
-            Discover events, save tickets, check the basics, and get resale alerts without the guesswork.
+            Find a music night that matches your vibe—with plain-English practicals, night-transit warnings, and 100% secure ticket resale.
           </p>
           <div className="hero-actions">
             <a className="button primary" href="#discover"><Icon name="compass" /> Start exploring</a>
@@ -275,8 +275,8 @@ function App() {
             <strong>{firstTimerOnly ? "First-timer mode is active" : "Showing all events"}</strong>
             <p>
               {firstTimerOnly
-                ? "Showing easier venues, clearer travel, and lower-pressure nights first."
-                : "Showing the full list, including later and louder nights."}
+                ? "Showing low-pressure venues, earlier starts, and simple transport options."
+                : "Showing the full list, including later starts, louder crowds, and clubbing institutions."}
             </p>
           </div>
           <div className="welcome-toggle-group">
@@ -376,12 +376,16 @@ function App() {
           Tick off the basics before you leave.
         </SectionHeader>
         <div className="checklist-layout">
-          <div className="checklist-score">
-            <span>{checklistProgress}% ready</span>
+          <div className={`checklist-score${checklistProgress === 100 ? " complete" : ""}`}>
+            <span>{checklistProgress === 100 ? "Fully ready" : `${checklistProgress}% ready`}</span>
             <div className="score-ring" style={{ "--ready": `${checklistProgress}%` }}>
-              <strong>{checklistDone.length}/{data.checklist.length}</strong>
+              <strong>{checklistProgress === 100 ? "✓" : `${checklistDone.length}/${data.checklist.length}`}</strong>
             </div>
-            <p>{selectedEvent.title} is looking doable. Keep the practicals close and the night gets much easier.</p>
+            <p>
+              {checklistProgress === 100
+                ? `🎉 You are fully scene-ready! Earplugs are packed, transport is planned, and your ticket is safe. Enjoy ${selectedEvent.title}!`
+                : `${selectedEvent.title} is looking doable. Tick off the practicals and your night gets much easier.`}
+            </p>
           </div>
           <div className="checklist-items">
             {data.checklist.map((item) => (
@@ -428,8 +432,8 @@ function App() {
       </section>
 
       <section className="section guide" id="guide">
-        <SectionHeader eyebrow="Scene guide" title="Scene terms, quick and clear.">
-          Tap a term when a listing gets confusing.
+        <SectionHeader eyebrow="Jargon Decoder" title="Dutch nightlife, demystified.">
+          Tap any club term to decode the scene language instantly.
         </SectionHeader>
         <div className="guide-layout">
           <div className="glossary-list">
@@ -460,21 +464,41 @@ function App() {
               <span>{data.myTix.ticket.status}</span>
               <span>{selectedEvent.firstTimer ? "first-timer OK" : "scene-ready"}</span>
             </div>
-            <h3>{selectedEvent.title}</h3>
-            <p>{selectedEvent.venue} · {selectedEvent.date} · {selectedEvent.time}</p>
-            <div className="wallet-grid">
-              <div>
-                <span>QR</span>
-                <strong>{data.myTix.ticket.qr}</strong>
+            <div className="ticket-main">
+              <h3>{selectedEvent.title}</h3>
+              <p>{selectedEvent.venue} · {selectedEvent.date} · {selectedEvent.time}</p>
+              <div className="wallet-grid">
+                <div>
+                  <span>QR</span>
+                  <strong>{data.myTix.ticket.qr}</strong>
+                </div>
+                <div>
+                  <span>Support</span>
+                  <strong>{data.myTix.ticket.support}</strong>
+                </div>
+                <div>
+                  <span>Reminder</span>
+                  <strong>{data.myTix.ticket.reminder}</strong>
+                </div>
               </div>
-              <div>
-                <span>Support</span>
-                <strong>{data.myTix.ticket.support}</strong>
-              </div>
-              <div>
-                <span>Reminder</span>
-                <strong>{data.myTix.ticket.reminder}</strong>
-              </div>
+            </div>
+            <div className="ticket-stub-divider" />
+            <div className="ticket-barcode" aria-hidden="true">
+              <span className="barcode-line" style={{ width: "3px" }} />
+              <span className="barcode-line" style={{ width: "1px" }} />
+              <span className="barcode-line" style={{ width: "4px" }} />
+              <span className="barcode-line" style={{ width: "2px" }} />
+              <span className="barcode-line" style={{ width: "1px" }} />
+              <span className="barcode-line" style={{ width: "3px" }} />
+              <span className="barcode-line" style={{ width: "2px" }} />
+              <span className="barcode-line" style={{ width: "4px" }} />
+              <span className="barcode-line" style={{ width: "1px" }} />
+              <span className="barcode-line" style={{ width: "3px" }} />
+              <span className="barcode-line" style={{ width: "2px" }} />
+              <span className="barcode-line" style={{ width: "1px" }} />
+              <span className="barcode-line" style={{ width: "4px" }} />
+              <span className="barcode-line" style={{ width: "2px" }} />
+              <span className="barcode-line" style={{ width: "1px" }} />
             </div>
           </article>
           <aside className="saved-nights">

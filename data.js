@@ -98,9 +98,9 @@ window.SS_DATA = {
     { term: "OV", plain: "Dutch public transport. You tap in and out with card, phone, or OV-chipkaart." }
   ],
   trust: [
-    { stat: "110%", label: "max resale cap", detail: "No hype pricing. Resale stays close to face value." },
-    { stat: "48h", label: "fresh QR window", detail: "The buyer gets a refreshed ticket before the event." },
-    { stat: "0 EUR", label: "refund stress", detail: "If a ticket does not scan, support steps in." }
+    { stat: "110%", label: "Fair Price Cap", detail: "No scalpers or markup shock. Prices stay near face value." },
+    { stat: "48h", label: "Fresh QR Codes", detail: "The buyer gets a secure, re-issued ticket before doors open." },
+    { stat: "0 EUR", label: "Zero Risk Support", detail: "Scam protection is active. Support handles any entry issues." }
   ],
   checklist: [
     { id: "vibe", label: "Pick a night that matches your energy", detail: "Start with mood before price or popularity." },
